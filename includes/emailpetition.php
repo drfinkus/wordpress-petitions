@@ -40,6 +40,26 @@ function guilro_petitions_signaturesgoal_shortcode($attr)
     }
 }
 
+// register shortcode to display signatures left
+add_shortcode('signatureleft', 'guilro_petitions_signaturesleft_shortcode');
+function guilro_petitions_signaturesleft_shortcode($attr)
+{
+    include_once 'class.petition.php';
+    $petition = new guilro_petitions_Petition();
+
+    $id = 1; // default
+    if (isset($attr['id']) && is_numeric($attr['id'])) {
+        $id = $attr['id'];
+    }
+
+    $petition_exists = $petition->retrieve($id);
+    if ($petition_exists) {
+        return $petition->goal - $petition->signatures;
+    } else {
+        return '';
+    }
+}
+
 // register shortcode to display petition form
 add_shortcode('emailpetition', 'guilro_petitions_emailpetition_shortcode');
 function guilro_petitions_emailpetition_shortcode($attr)
